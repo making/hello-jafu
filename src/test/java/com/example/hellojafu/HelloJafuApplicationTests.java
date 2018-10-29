@@ -1,9 +1,9 @@
 package com.example.hellojafu;
 
 
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
@@ -13,21 +13,23 @@ public class HelloJafuApplicationTests {
 
     private ConfigurableApplicationContext context;
 
-    @BeforeAll
+    @Before
     public void beforeAll() {
-        context = HelloJafuApplication.app.run();
+        this.context = HelloJafuApplication.app.run();
     }
 
     @Test
-    public void requestRootEndpoint() {
-        client.get().uri("/").exchange()
-                .expectStatus().is2xxSuccessful()
+    public void testHello() throws Exception {
+        this.client.get()
+                .uri("/") //
+                .exchange() //
+                .expectStatus().isOk() //
                 .expectBody(String.class).isEqualTo("Hello World!");
     }
 
-    @AfterAll
-    void afterAll() {
-        context.close();
+    @After
+    public void afterAll() {
+        this.context.close();
     }
 
 }
